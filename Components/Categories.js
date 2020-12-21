@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Inner from './Inner';
-import LogUserOut from './LogUserOut';
 
 const Categories = ({setLoggedInState}) => {
   const options = [
@@ -28,7 +27,6 @@ const Categories = ({setLoggedInState}) => {
   return (
     <View style={styles.categories}>
       <Inner>
-        <LogUserOut setLoggedInState={setLoggedInState}/>
         <Text style={styles.title}>I'm interested in:</Text>
         <View style={styles.option_parent}>
           <ShowOptions/>
@@ -41,10 +39,10 @@ const Categories = ({setLoggedInState}) => {
 const styles = StyleSheet.create({
   categories: {
     paddingTop: 20,
-    paddingBottom: 5
+    paddingBottom: 20
   },
   title: {
-    color: 'white',
+    color: 'black',
     fontSize: 20,
     fontWeight: '700'
   },
@@ -54,10 +52,10 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   option: {
-    color: 'white',
+    color: 'black',
     borderWidth: 2,
     fontSize: 14,
-    borderColor: 'white',
+    borderColor: 'black',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 14,

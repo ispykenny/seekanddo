@@ -1,60 +1,73 @@
-import React from 'react';
-import {ImageBackground, Text, View, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ImageBackground, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import fetcher from '../Utils/fetcher';
 import Inner from './Inner';
 
 const Cards = (props) => {
+  const [allCards, setAllCards] = useState({});
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
+      await setAllCards(cards.data.items)
+    }
+    fetchCards();
+  }, [])
+
+  const doThing = (e) => {
+    console.log(e)
+  }
+
+  
+  const CardItems = () => {
+
+    if(allCards.length >= 0) {
+      return (
+        allCards.map((item, index) => (
+          <TouchableHighlight style={styles.card} key={index} onPress={(doThing)}>
+          <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
+            <View style={styles.overlay}>
+              <View style={styles.textOverlay}>
+                <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
+              </View>
+            </View>
+          </ImageBackground>
+        </TouchableHighlight>
+        ))
+      )
+    } else {
+      return (
+        <>
+        <View style={styles.card} key={0}>
+          <ImageBackground style={styles.placeholderImage}>
+            <View style={styles.textOverlay}>
+              <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
+            </View>
+          </ImageBackground>
+        </View>
+        <View style={styles.card} key={1}>
+        <ImageBackground style={styles.placeholderImage}>
+          <View style={styles.textOverlay}>
+            <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
+          </View>
+        </ImageBackground>
+      </View>
+      <View style={styles.card} key={2}>
+      <ImageBackground style={styles.placeholderImage}>
+        <View style={styles.textOverlay}>
+          <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
+        </View>
+      </ImageBackground>
+    </View>
+        </>
+      )
+    }
+  }
+
   return (
     <View style={styles.cardParent}>
       <Inner>
-        <View style={styles.card}>
-          <ImageBackground style={styles.image} source={{uri: `https://images.pexels.com/photos/2984224/pexels-photo-2984224.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`}}>
-            <View style={styles.overlay}>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>La Jolla Shores</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
-
-        <View style={styles.card}>
-          <ImageBackground style={styles.image} source={{uri: `https://images.pexels.com/photos/159291/beer-machine-alcohol-brewery-159291.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`}}>
-            <View style={styles.overlay}>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>13 Point {"\n"}Brewing Company</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
-
-        <View style={styles.card}>
-          <ImageBackground style={styles.image} source={{uri: `https://images.pexels.com/photos/6050/nature-bird-people-grass.jpg?auto=compress&cs=tinysrgb&dpr=2&w=500`}}>
-            <View style={styles.overlay}>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>Lake Murray</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
-
-        <View style={styles.card}>
-          <ImageBackground style={styles.image} source={{uri: `https://images.pexels.com/photos/36371/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`}}>
-            <View style={styles.overlay}>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>Balboa Park</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
-
-        <View style={styles.card}>
-          <ImageBackground style={styles.image} source={{uri: `https://images.pexels.com/photos/5740937/pexels-photo-5740937.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260`}}>
-            <View style={styles.overlay}>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>Old Town</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </View>
+        <CardItems/>
       </Inner>
     </View>
   )
@@ -64,7 +77,8 @@ export default Cards;
 
 const styles = StyleSheet.create({
   cardParent: {
-    paddingVertical: 30
+    height: '100%',
+    marginBottom: 20
   },
   cards: {
     color: 'blue'
@@ -100,8 +114,16 @@ const styles = StyleSheet.create({
   image: {
     position: 'relative',
     resizeMode: 'cover',
-    height: 200,
+    height: 180,
     borderRadius: 10,
     overflow: 'hidden'
+  },
+  placeholderImage: {
+    position: 'relative',
+    resizeMode: 'cover',
+    height: 180,
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: "#f5f5f5"
   }
 })

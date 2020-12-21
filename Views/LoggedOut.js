@@ -14,7 +14,7 @@ const LoggedOut = ({setLoggedInState}) => {
   }
 
   return (
-    <View>
+    <View style={styles.home}>
       <Inner>
         <Text style={styles.button} onPress={updateState}>Logged In</Text>
       </Inner>
@@ -23,8 +23,16 @@ const LoggedOut = ({setLoggedInState}) => {
 }
 
 const styles = StyleSheet.create({
+  home: {
+    backgroundColor: 'green',
+    height:  '100%',
+    width: '100%',
+    top: 0, 
+    left: 0,
+    zIndex: 66
+  },  
   button: {
-    color: 'white'
+    color: 'black'
   }
 })
 

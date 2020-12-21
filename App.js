@@ -20,9 +20,12 @@ import Nav from './Components/Nav';
 import Categories from './Components/Categories';
 import LoggedIn from './Views/Loggedin';
 import LoggedOut from './Views/LoggedOut';
+import Chirp from './Components/Chirp';
+import Panel from './Components/Panel';
 
 const App: () => React$Node = () => {
   const [loggedInStatus, setLoggedInState] = useState(false)
+  const [panelShowing, setPanelView] = useState(true)
 
   const CurrentView = () => {
     if(loggedInStatus) {
@@ -37,34 +40,43 @@ const App: () => React$Node = () => {
   }
 
   return (
-    <View style={{backgroundColor: '#000000', height: '100%'}}>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView>
-        <Nav loggedInStatus={loggedInStatus}/>
-        { loggedInStatus ? <Categories setLoggedInState={setLoggedInState}/> : <Text>''</Text> }
+    <View style={{height: '100%'}}>
+      <StatusBar barStyle="dark-content" />
+
+      <SafeAreaView style={styles.parentApp}>
+        <Nav loggedInStatus={loggedInStatus} setPanelView={setPanelView}/>
+        { loggedInStatus ? <Categories/> : <View></View> }
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <CurrentView/>
         </ScrollView>
       </SafeAreaView>
+
+      {/* <Chirp/> */}
+      <Panel setPanelView={setPanelView} panelShowing={panelShowing} setLoggedInState={setLoggedInState}/>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  parentApp: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  },
   scrollView: {
-    color: 'white',
-    backgroundColor: '#000000'
+    color: 'black',
+    height: '100%',
+    position: 'relative'
   },
   engine: {
     position: 'absolute',
     right: 0,
   },
   body: {
-    backgroundColor: '#000000',
     height: '100%',
-    color: '#ffffff'
+    color: '#000000'
   },
   sectionContainer: {
     marginTop: 262,

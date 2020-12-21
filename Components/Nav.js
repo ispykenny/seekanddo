@@ -3,31 +3,31 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground
+  ImageBackground,
+  TouchableHighlight
 } from 'react-native';
 
 import Inner from './Inner';
 
-const Nav = ({loggedInStatus}) => {
-  const [theStater, setStater] = useState(false);
+const Nav = ({loggedInStatus, setPanelView}) => {
 
-  const updateTheButton = () => {
-    setStater(!theStater);
-
-    setTimeout(() => console.log(theStater))
+  const changePanelView = () => {
+    setPanelView(false)
   }
 
   const UserAvatar = () => {
     if(loggedInStatus) {
       return (
-        <View>
+        <TouchableHighlight onPress={changePanelView}>
+          <View>
           <ImageBackground style={styles.avatar} source={{uri: `https://avatars3.githubusercontent.com/u/15894356?s=460&u=118ce796d5f3016317cbe6da7e6ebed39d641cd1&v=4`}}> 
           </ImageBackground>
         </View>
+        </TouchableHighlight>
       )
     } else {
       return (
-        <Text>''</Text>
+        <Text></Text>
       )
     }
   }
@@ -37,7 +37,7 @@ const Nav = ({loggedInStatus}) => {
       <Inner>
         <View style={styles.nav}>
           <View>
-            <Text style={{color: 'white', textAlign: 'left', fontWeight: '800', fontSize: 24}} onPress={updateTheButton}>Seekando</Text>
+            <Text style={{color: 'black', textAlign: 'left', fontWeight: '800', fontSize: 24}}>Seekando</Text>
           </View>
           <UserAvatar/>
         </View>
@@ -48,13 +48,15 @@ const Nav = ({loggedInStatus}) => {
 
 const styles = StyleSheet.create({
   navParent: {
-    borderBottomColor: '#111',
-    borderBottomWidth: 2
+    borderBottomColor: '#f5f5f5',
+    borderBottomWidth: 2,
+    zIndex: 999,
+    backgroundColor: 'rgba(255,255,255, 0.3)'
   },
 
   nav: {
     paddingVertical: 20,
-    color: 'white',
+    color: 'black',
     flexDirection: 'row',
     alignItems: 'center',
     fontWeight: '700',
