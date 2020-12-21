@@ -51,7 +51,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f5f5f5',
     borderBottomWidth: 2,
     zIndex: 999,
-    backgroundColor: 'rgba(255,255,255, 0.3)'
+    backgroundColor: 'rgba(255,255,255, 0.3)',
+    paddingTop: 40
+    
   },
 
   nav: {
