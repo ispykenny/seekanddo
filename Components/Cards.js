@@ -1,79 +1,77 @@
-import React, {useState, useEffect} from 'react';
-import {ImageBackground, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-import fetcher from '../Utils/fetcher';
+import React, {useState, useEffect, useCallback} from 'react';
+import {RefreshControl,ImageBackground, Text, View, StyleSheet, TouchableHighlight, FlatList, SafeAreaView, ScrollView } from 'react-native';
+import fetcher from '../Utils/fetcher'
 import Inner from './Inner';
 import Heart from '../Assets/Heart';
 
-const Cards = (props) => {
-  const [allCards, setAllCards] = useState({});
+const wait = (timeout) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
-      await setAllCards(cards.data.items)
-    }
-    fetchCards();
-  }, [])
+const Cards = ({allCards, setAllCards}) => {
+  const [refreshing, setRefreshing] = useState(false);
 
-  const doThing = (e) => {
-    console.log('hi',e)
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => {
+      const fetchCards = async () => {
+        let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
+        let theCards = await shuffle(cards.data.items);
+
+        await setAllCards(theCards)
+      }
+      fetchCards();
+      setRefreshing(false)
+    });
+  }, []);
+
+  function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
   }
 
-  
-  const CardItems = () => {
-
-    if(allCards.length >= 0) {
-      return (
-        allCards.map((item, index) => (
-          <TouchableHighlight style={styles.card} key={index} onPress={(e) => doThing(index)}>
-          <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
-            <View style={styles.overlay}>
-              <View style={styles.heart}>
-                <Heart/>
-              </View>
-              <View style={styles.textOverlay}>
-                <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
-              </View>
-            </View>
-          </ImageBackground>
-        </TouchableHighlight>
-        ))
-      )
-    } else {
-      return (
-        <>
-        <View style={styles.card} key={0}>
-          <ImageBackground style={styles.placeholderImage}>
-            <View style={styles.textOverlay}>
-              <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
-            </View>
-          </ImageBackground>
-        </View>
-        <View style={styles.card} key={1}>
-        <ImageBackground style={styles.placeholderImage}>
-          <View style={styles.textOverlay}>
-            <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
-          </View>
-        </ImageBackground>
-      </View>
-      <View style={styles.card} key={2}>
-      <ImageBackground style={styles.placeholderImage}>
-        <View style={styles.textOverlay}>
-          <Text style={styles.overlayText, styles.cardTitle}>Loading...</Text>
-        </View>
-      </ImageBackground>
-    </View>
-        </>
-      )
-    }
-  }
+  return array;
+}
 
   return (
-    <View style={styles.cardParent}>
-      <Inner>
-        <CardItems/>
-      </Inner>
-    </View>
+    <SafeAreaView style={styles.cardParent}>
+      <ScrollView>
+        <FlatList
+          keyExtractor={(item) => item.sys.id}
+          data={allCards}
+          renderItem={ ({item}) => (
+            <Inner>
+              <View style={styles.card} key={1} onPress={(e) => doThing(1)}>
+              <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
+                <View style={styles.overlay}>
+                  <View style={styles.heart}>
+                    <Heart/>
+                  </View>
+                  <View style={styles.textOverlay}>
+                    <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
+                  </View>
+                </View>
+              </ImageBackground>
+            </View>
+            </Inner>
+          )}
+        />
+       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

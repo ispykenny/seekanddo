@@ -6,9 +6,8 @@ import {
   ImageBackground,
   TouchableHighlight
 } from 'react-native';
-
 import Inner from './Inner';
-
+import SettingsIcon from '../Assets/Settings';
 const Nav = ({setShowSettings, showingSettings}) => {
 
   const changePanelView = () => {
@@ -22,12 +21,11 @@ const Nav = ({setShowSettings, showingSettings}) => {
           <View>
             <Text style={{color: 'black', textAlign: 'left', fontWeight: '800', fontSize: 24}}>Seekando</Text>
           </View>
-          <TouchableHighlight onPress={changePanelView}>
-          <View>
-          <ImageBackground style={styles.avatar} source={{uri: `https://avatars3.githubusercontent.com/u/15894356?s=460&u=118ce796d5f3016317cbe6da7e6ebed39d641cd1&v=4`}}> 
-          </ImageBackground>
-        </View>
-        </TouchableHighlight>
+          <TouchableHighlight underlayColor="#f5f5f5" onPress={changePanelView}>
+            <View>
+              <SettingsIcon/>
+            </View>
+          </TouchableHighlight>
         </View>
       </Inner>
     </View>
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
   },
 
   nav: {
-    paddingVertical: 20,
+    paddingVertical: 10,
     color: 'black',
     flexDirection: 'row',
     alignItems: 'center',
