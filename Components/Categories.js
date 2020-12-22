@@ -1,35 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import Inner from './Inner';
 
-const Categories = ({setLoggedInState}) => {
-  const options = [
-    {
-      type: 'Eating'
-    },
-    {
-      type: 'Outdoors'
-    },
-    {
-      type: 'Indoors'
-    }
-  ]
-
-  const ShowOptions = () => {
-    return options.map((item, index) => (
-      <View key={index}>
-        <Text style={styles.option}>{item.type}</Text>
-      </View>
-    ))
+const Categories = ({setTheCategories, categories}) => {
+  
+  const updateCategories = index => {
+    console.log(index, categories[index].checked)
+    categories[index].checked = !categories[index].checked
+    setTheCategories(categories)
+    console.table(categories)
   }
+  
   
 
   return (
     <View style={styles.categories}>
       <Inner>
-        <Text style={styles.title}>I'm interested in:</Text>
+        <Text style={styles.title}>Where will you go today?</Text>
         <View style={styles.option_parent}>
-          <ShowOptions/>
+          {categories.map((item, index) => (
+    <TouchableHighlight  onPress={() => updateCategories(index)} style={[styles.option, item.checked ? styles.checked : null]} key={index}>
+        <View>
+          <Text>{item.type}</Text>
+        </View>
+      </TouchableHighlight>
+    ))}
         </View>
       </Inner>
     </View>
@@ -52,14 +47,20 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   option: {
-    color: 'black',
-    borderWidth: 2,
+    color: 'white',
     fontSize: 14,
-    borderColor: 'black',
+    overflow: 'hidden',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 6,
     borderRadius: 14,
+    fontWeight: '700',
+    backgroundColor: '#f5f5f5',
+    color: 'black',
     marginRight: 10
+  },
+  checked: {
+    backgroundColor: '#0F71D3',
+    color: 'white'
   }
 })
 

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {ImageBackground, Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import fetcher from '../Utils/fetcher';
 import Inner from './Inner';
+import Heart from '../Assets/Heart';
 
 const Cards = (props) => {
   const [allCards, setAllCards] = useState({});
@@ -15,7 +16,7 @@ const Cards = (props) => {
   }, [])
 
   const doThing = (e) => {
-    console.log(e)
+    console.log('hi',e)
   }
 
   
@@ -24,9 +25,12 @@ const Cards = (props) => {
     if(allCards.length >= 0) {
       return (
         allCards.map((item, index) => (
-          <TouchableHighlight style={styles.card} key={index} onPress={(doThing)}>
+          <TouchableHighlight style={styles.card} key={index} onPress={(e) => doThing(index)}>
           <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
             <View style={styles.overlay}>
+              <View style={styles.heart}>
+                <Heart/>
+              </View>
               <View style={styles.textOverlay}>
                 <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
               </View>
@@ -94,7 +98,11 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'rgba(000, 000, 000, 0.6)'
   },
-
+  heart: {
+    position: 'absolute',
+    top: 18,
+    right: 20
+  },
   textOverlay: {
     position: 'absolute',
     width: '70%',
