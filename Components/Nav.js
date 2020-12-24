@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import Inner from './Inner';
 import SettingsIcon from '../Assets/Settings';
+import TuhDoIcon from '../Assets/TuhDo';
 const Nav = ({setShowSettings, showingSettings}) => {
 
   const changePanelView = () => {
@@ -19,13 +20,16 @@ const Nav = ({setShowSettings, showingSettings}) => {
       <Inner>
         <View style={styles.nav}>
           <View>
-            <Text style={{color: 'black', textAlign: 'left', fontWeight: '800', fontSize: 24}}>Seekando</Text>
+            <Text style={{color: '#205DBF', textAlign: 'center', fontWeight: '800', fontSize: 24}}>TuhDo</Text>
           </View>
-          <TouchableHighlight underlayColor="#f5f5f5" onPress={changePanelView}>
+          <View style={{marginLeft: 6}}>
+            <TuhDoIcon/>
+          </View>
+          {/* <TouchableHighlight underlayColor="#f5f5f5" onPress={changePanelView}>
             <View>
               <SettingsIcon/>
             </View>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
       </Inner>
     </View>
@@ -45,8 +49,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     fontWeight: '700',
+    justifyContent: 'center',
+
     display: 'flex',
-    justifyContent: 'space-between'
+    // justifyContent: 'space-between'
   },
 
   avatar: {

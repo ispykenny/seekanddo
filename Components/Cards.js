@@ -35,11 +35,11 @@ const Cards = ({allCards, setAllCards}) => {
   }, []);
 
 
- 
+
 const rightButtons = [
   <TouchableHighlight style={{backgroundColor: 'red', height: 180}}><Text>Remove</Text></TouchableHighlight>
 ];
- 
+
 
 
 
@@ -79,7 +79,7 @@ const rightButtons = [
                       <Heart/>
                     </View>
                     <View style={styles.textOverlay}>
-                      <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle} {item.sys.id}</Text>
+                      <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
                     </View>
                   </View>
                 </ImageBackground>

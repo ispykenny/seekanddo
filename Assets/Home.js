@@ -9,7 +9,7 @@ function HomeIcon(props) {
       height={24}
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
+      stroke="#205DBF"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"

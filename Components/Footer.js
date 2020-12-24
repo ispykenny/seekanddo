@@ -7,6 +7,7 @@ import Settings from '../Assets/Settings';
 import Inner from './Inner';
 
 const Footer = () => {
+  // const [position, setPosition] = useState(0)
 
   const indicatorStyles = (index = 0) => {
     let value = `${1 * index}00`
@@ -38,7 +39,7 @@ const Footer = () => {
             </View>
             <Text style={styles.column_text}>Liked</Text>
           </View>
-          <TouchableHighlight  onPress={() => indicatorStyles(4)}>
+          <TouchableHighlight index={4} onPress={(props) => indicatorStyles(4)}>
             <View style={styles.columns}>
             <View>
               <Settings/>
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     left: 0,
     height: 4,
     width: '25%',
-    backgroundColor: '#0F71D3'
+    backgroundColor: '#205DBF'
   }
 
 })
