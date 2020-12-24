@@ -64,30 +64,30 @@ const rightButtons = [
 
   return (
     <SafeAreaView style={styles.cardParent}>
-        <FlatList
-          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          keyExtractor={(item) => item.sys.id}
-          data={refreshedCards}
-          contentContainerStyle={{paddingBottom: 130}}
-          renderItem={ ({item}) => (
-            <Swipeable rightButtons={rightButtons}>
-              <View style={styles.card} key={1} onPress={(e) => doThing(1)}>
-                <Inner>
-              <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
-                <View style={styles.overlay}>
-                  <View style={styles.heart}>
-                    <Heart/>
+      <FlatList
+        refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        keyExtractor={(item) => item.sys.id}
+        data={refreshedCards}
+        contentContainerStyle={{paddingBottom: 130}}
+        renderItem={ ({item}) => (
+          <View >
+            <View style={styles.card} key={1} onPress={(e) => doThing(1)}>
+              <Inner>
+                <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
+                  <View style={styles.overlay}>
+                    <View style={styles.heart}>
+                      <Heart/>
+                    </View>
+                    <View style={styles.textOverlay}>
+                      <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle} {item.sys.id}</Text>
+                    </View>
                   </View>
-                  <View style={styles.textOverlay}>
-                    <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
-                  </View>
-                </View>
-              </ImageBackground>
-            </Inner>
+                </ImageBackground>
+              </Inner>
             </View>
-            </Swipeable>
-          )}
-        />
+          </View>
+        )}
+      />
     </SafeAreaView>
   )
 }
@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
     bottom: '10%',
     left: 14
   },
-
   cardTitle: {
     fontSize: 22,
     width: '100%',

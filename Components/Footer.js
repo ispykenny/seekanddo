@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, TouchableHighlight} from 'react-native';
 import Categories from '../Assets/Categories';
 import HeartDark from '../Assets/HeartDark';
 import HomeIcon from '../Assets/Home';
@@ -7,36 +7,47 @@ import Settings from '../Assets/Settings';
 import Inner from './Inner';
 
 const Footer = () => {
+
+  const indicatorStyles = (index = 0) => {
+    let value = `${1 * index}00`
+    console.log(index)
+    return {
+      transform: [{translateX: value}]
+    }
+  }
+
   return (
     <View style={styles.footerParent}>
       <Inner>
         <View style={styles.options}>
-          <View style={styles.columns}>
+          <View style={styles.columns} onPress={() => indicatorStyles(1)}>
             <View>
               <HomeIcon/>
             </View>
             <Text style={styles.column_text}>Home</Text>
           </View>
-          <View style={styles.columns}>
+          <View style={styles.columns} onPress={() => indicatorStyles(2)}>
             <View>
               <Categories/>
             </View>
             <Text style={styles.column_text}>Categories</Text>
           </View>
-          <View style={styles.columns}>
+          <View style={styles.columns} onPress={() => indicatorStyles(3)}>
             <View>
               <HeartDark/>
             </View>
             <Text style={styles.column_text}>Liked</Text>
           </View>
-          <View style={styles.columns}>
+          <TouchableHighlight  onPress={() => indicatorStyles(4)}>
+            <View style={styles.columns}>
             <View>
               <Settings/>
             </View>
             <Text style={styles.column_text}>Settings</Text>
-          </View>
+            </View>
+          </TouchableHighlight>
 
-        <View style={styles.barInidcator}></View>
+          <View style={[styles.barInidcator, indicatorStyles()]}></View>
         </View>
       </Inner>
     </View>
