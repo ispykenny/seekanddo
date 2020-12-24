@@ -6,15 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {useState} from 'react';
 import Home from './Views/Home';
 import LogginScreen from './Views/Index';
 

@@ -13,6 +13,7 @@ import Categories from '../Components/Categories';
 import Cards from '../Components/Cards';
 import SettingsPanel from './SettingsPanel';
 import fetcher from '../Utils/fetcher';
+import Footer from '../Components/Footer';
 
 
 const wait = (timeout) => {
@@ -37,7 +38,7 @@ const Home = ({setLoggedin}) => {
       let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
       await setAllCards(cards.data.items)
     }
-    fetchCards();
+    fetchCards()
   }, [])
 
 
@@ -96,57 +97,40 @@ const Home = ({setLoggedin}) => {
       
     } else {
       return (
-        <View>
+        <>
           <Categories 
             setTheCategories={setTheCategories}
             categories={categories}
           />
           <SetTheCards/>  
-        </View>
+        </>
       )
     }
   }
   
   return (
-    <View style={{height: '100%'}}>
+    <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.parentApp}>
         <Nav 
           setShowSettings={setShowSettings}
           showingSettings={showingSettings}
         />
-
         <CurrentView/>
-        
       </SafeAreaView>
-    </View>
+      <Footer/>
+      
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   parentApp: {
-    position: 'absolute',
+    flex: 1,
     width: '100%',
     height: '100%',
+    backgroundColor: 'transparent'
   },
-  scrollView: {
-    color: 'black',
-    height: '100%',
-    position: 'relative'
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    height: '100%',
-    color: '#000000'
-  },
-  sectionContainer: {
-    marginTop: 262,
-    paddingHorizontal: 24,
-  },
-
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,

@@ -20,7 +20,7 @@ const Categories = ({setTheCategories, categories}) => {
     <View style={styles.categories}>
       <Inner>
         <Text style={styles.title}>Where will you go today?</Text>
-        <View style={styles.option_parent}>
+        {/* <View style={styles.option_parent}>
           { categories.map((item, index) => (
             <TouchableHighlight 
               underlayColor='transparent'  
@@ -30,7 +30,7 @@ const Categories = ({setTheCategories, categories}) => {
               </View>
             </TouchableHighlight>
           ))}
-        </View>
+        </View> */}
       </Inner>
     </View>
   )

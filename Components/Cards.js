@@ -1,34 +1,50 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {RefreshControl,ImageBackground, Text, View, StyleSheet, TouchableHighlight, FlatList, SafeAreaView, ScrollView } from 'react-native';
 import fetcher from '../Utils/fetcher'
 import Inner from './Inner';
 import Heart from '../Assets/Heart';
+import Swipeable from 'react-native-swipeable-row';
 
 const wait = (timeout) => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
   });
 }
-
+let theCards = [];
 const Cards = ({allCards, setAllCards}) => {
+  const [refreshedCards, setRefreshedCards] = useState(allCards)
   const [refreshing, setRefreshing] = useState(false);
+  
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(1000).then(() => {
-      const fetchCards = async () => {
-        let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
-        let theCards = await shuffle(cards.data.items);
+    
+    const fetchCards = async () => {
+      let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
+      theCards = await shuffle(cards.data.items);
+      setRefreshedCards(theCards)
 
-        await setAllCards(theCards)
-      }
-      fetchCards();
-      setRefreshing(false)
-    });
+      wait(200).then(() =>{
+        setRefreshing(false)
+      })
+    }
+    fetchCards();
+    
+  
+    
   }, []);
 
-  function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+
+ 
+const rightButtons = [
+  <TouchableHighlight style={{backgroundColor: 'red', height: 180}}><Text>Remove</Text></TouchableHighlight>
+];
+ 
+
+
+
+  const shuffle = (array) => {
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
@@ -48,13 +64,15 @@ const Cards = ({allCards, setAllCards}) => {
 
   return (
     <SafeAreaView style={styles.cardParent}>
-      <ScrollView>
         <FlatList
+          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           keyExtractor={(item) => item.sys.id}
-          data={allCards}
+          data={refreshedCards}
+          contentContainerStyle={{paddingBottom: 130}}
           renderItem={ ({item}) => (
-            <Inner>
+            <Swipeable rightButtons={rightButtons}>
               <View style={styles.card} key={1} onPress={(e) => doThing(1)}>
+                <Inner>
               <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
                 <View style={styles.overlay}>
                   <View style={styles.heart}>
@@ -65,12 +83,11 @@ const Cards = ({allCards, setAllCards}) => {
                   </View>
                 </View>
               </ImageBackground>
-            </View>
             </Inner>
+            </View>
+            </Swipeable>
           )}
         />
-       <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -78,15 +95,8 @@ const Cards = ({allCards, setAllCards}) => {
 export default Cards;
 
 const styles = StyleSheet.create({
-  cardParent: {
-    height: '100%',
-    marginBottom: 20
-  },
-  cards: {
-    color: 'blue'
-  },
   card: {
-    marginBottom: 30
+    marginBottom: 10
   },
   overlay: {
     position: 'absolute',
@@ -105,7 +115,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '70%',
     bottom: '10%',
-    left: 20
+    left: 14
   },
 
   cardTitle: {
