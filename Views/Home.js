@@ -14,24 +14,14 @@ import Cards from '../Components/Cards';
 import SettingsPanel from './SettingsPanel';
 import fetcher from '../Utils/fetcher';
 import Footer from '../Components/Footer';
+import SingleView from './SingleView';
 
-
-const wait = (timeout) => {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
-}
 
 const Home = ({setLoggedin}) => {
   const [showingSettings, setShowSettings] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-
   const [allCards, setAllCards] = useState([]);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
+  const [singleShowing, setSingleShowing] = useState(false);
+  const [singleViewData, setSingleViewData] = useState([])
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -76,12 +66,18 @@ const Home = ({setLoggedin}) => {
   const SetTheCards = () => {
     if(allCards.length >= 1) {
       return (
-        <Cards allCards={allCards} setAllCards={setAllCards}/>
+        <Cards 
+          allCards={allCards} 
+          setAllCards={setAllCards} 
+          setSingleShowing={setSingleShowing} 
+          singleShowing={singleShowing}
+          setSingleViewData={setSingleViewData}
+        />
       )
     } else {
       return (
         <View>
-          <Text>none</Text>
+          <Text></Text>
         </View>
       )
     }
@@ -119,6 +115,11 @@ const Home = ({setLoggedin}) => {
         <CurrentView/>
       </SafeAreaView>
       <Footer/>
+      { singleShowing ? <SingleView 
+      setSingleShowing={setSingleShowing} 
+      singleShowing={singleShowing}
+      setSingleViewData={setSingleViewData}
+      singleViewData={singleViewData}/> : null}
       
     </>
   );
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     padding: 4,
     paddingRight: 12,
     textAlign: 'right',
-  },
+  }
 });
 
 export default Home;

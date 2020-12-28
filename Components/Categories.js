@@ -19,7 +19,7 @@ const Categories = ({setTheCategories, categories}) => {
   return (
     <View style={styles.categories}>
       <Inner>
-        <Text style={styles.title}>Where will you go today?</Text>
+        {/* <Text style={styles.title}>Where will you go today?</Text> */}
         {/* <View style={styles.option_parent}>
           { categories.map((item, index) => (
             <TouchableHighlight 

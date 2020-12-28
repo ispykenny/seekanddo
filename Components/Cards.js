@@ -1,9 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {RefreshControl,ImageBackground, Text, View, StyleSheet, TouchableHighlight, FlatList, SafeAreaView, ScrollView } from 'react-native';
-import fetcher from '../Utils/fetcher'
 import Inner from './Inner';
 import Heart from '../Assets/Heart';
-import Swipeable from 'react-native-swipeable-row';
+import PlaceHolder from '../Assets/Placeholder';
+import fetcher from '../Utils/fetcher';
 
 const wait = (timeout) => {
   return new Promise(resolve => {
@@ -11,14 +11,13 @@ const wait = (timeout) => {
   });
 }
 let theCards = [];
-const Cards = ({allCards, setAllCards}) => {
-  const [refreshedCards, setRefreshedCards] = useState(allCards)
+const Cards = ({allCards, singleShowing, setSingleShowing, setSingleViewData}) => {
+  const [refreshedCards, setRefreshedCards] = useState(allCards);
   const [refreshing, setRefreshing] = useState(false);
   
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    
     const fetchCards = async () => {
       let cards = await fetcher('https://seekanddo.herokuapp.com/all-locations');
       theCards = await shuffle(cards.data.items);
@@ -29,9 +28,6 @@ const Cards = ({allCards, setAllCards}) => {
       })
     }
     fetchCards();
-    
-  
-    
   }, []);
 
 
@@ -62,6 +58,40 @@ const rightButtons = [
   return array;
 }
 
+const CardItem = ({item}) => {
+  const doThing = useCallback((e) => {
+    console.log(item.fields)
+    setSingleViewData(item)
+    setSingleShowing(true)
+  })
+
+  return (
+    <TouchableHighlight underlayColor="transparent" onPress={() => {
+      doThing();
+      // getSingleData(item.sys.id)
+    }} >
+      <View style={styles.card}>
+        <Inner>
+          <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
+            <View style={styles.overlay}>
+              <View style={styles.category}>
+                <PlaceHolder/>
+                <Text style={styles.category_text}>Category One</Text>
+              </View>
+              <View style={styles.heart}>
+                <Heart/>
+              </View>
+              <View style={styles.textOverlay}>
+                <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
+              </View>
+            </View>
+          </ImageBackground>
+        </Inner>
+      </View>
+    </TouchableHighlight>
+  )
+}
+
   return (
     <SafeAreaView style={styles.cardParent}>
       <FlatList
@@ -69,24 +99,7 @@ const rightButtons = [
         keyExtractor={(item) => item.sys.id}
         data={refreshedCards}
         contentContainerStyle={{paddingBottom: 130}}
-        renderItem={ ({item}) => (
-          <View >
-            <View style={styles.card} key={1} onPress={(e) => doThing(1)}>
-              <Inner>
-                <ImageBackground style={styles.image} source={{uri: `https:${item.fields.locationImage.fields.file.url}`}}>
-                  <View style={styles.overlay}>
-                    <View style={styles.heart}>
-                      <Heart/>
-                    </View>
-                    <View style={styles.textOverlay}>
-                      <Text style={styles.overlayText, styles.cardTitle}>{item.fields.locationTitle}</Text>
-                    </View>
-                  </View>
-                </ImageBackground>
-              </Inner>
-            </View>
-          </View>
-        )}
+        renderItem={ ({item}) => <CardItem item={item}/>}
       />
     </SafeAreaView>
   )
@@ -108,7 +121,7 @@ const styles = StyleSheet.create({
   },
   heart: {
     position: 'absolute',
-    top: 18,
+    top: 16,
     right: 20
   },
   textOverlay: {
@@ -124,7 +137,17 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   overlayText: {
-    color: 'white'
+    color: 'white',
+  },
+  category: {
+    position: 'absolute',
+    top: 16,
+    left: 14,
+  },
+  category_text: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 13
   },
   image: {
     position: 'relative',
@@ -140,5 +163,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: "#f5f5f5"
-  }
-})
+  },
+}) 

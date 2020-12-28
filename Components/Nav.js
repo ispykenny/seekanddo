@@ -20,10 +20,7 @@ const Nav = ({setShowSettings, showingSettings}) => {
       <Inner>
         <View style={styles.nav}>
           <View>
-            <Text style={{color: '#205DBF', textAlign: 'center', fontWeight: '800', fontSize: 24}}>TuhDo</Text>
-          </View>
-          <View style={{marginLeft: 6}}>
-            <TuhDoIcon/>
+            <Text style={{color: '#205DBF', textAlign: 'center', fontWeight: '800', fontSize: 24}}>Some Awesome Name</Text>
           </View>
           {/* <TouchableHighlight underlayColor="#f5f5f5" onPress={changePanelView}>
             <View>
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
   navParent: {
     borderBottomColor: '#f5f5f5',
     borderBottomWidth: 2,
-    zIndex: 999,
+    zIndex: 999999,
   },
 
   nav: {
