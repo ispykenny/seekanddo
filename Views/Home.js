@@ -15,7 +15,8 @@ import SettingsPanel from './SettingsPanel';
 import fetcher from '../Utils/fetcher';
 import Footer from '../Components/Footer';
 import SingleView from './SingleView';
-
+import PlaceHolderCard from '../Assets/PlaceholderCard';
+import Inner from '../Components/Inner'
 
 const Home = ({setLoggedin}) => {
   const [showingSettings, setShowSettings] = useState(false);
@@ -76,9 +77,28 @@ const Home = ({setLoggedin}) => {
       )
     } else {
       return (
-        <View>
-          <Text></Text>
-        </View>
+        <>  
+          <View style={{marginBottom: 30}}>
+            <Inner>
+              <PlaceHolderCard/>
+            </Inner>
+          </View>
+          <View style={{marginBottom: 30}}>
+            <Inner>
+              <PlaceHolderCard/>
+            </Inner>
+          </View>
+          <View style={{marginBottom: 30}}>
+            <Inner>
+              <PlaceHolderCard/>
+            </Inner>
+          </View>
+          <View style={{marginBottom: 0}}>
+            <Inner>
+              <PlaceHolderCard/>
+            </Inner>
+          </View>
+        </>
       )
     }
   }
